@@ -5,7 +5,7 @@ Jogo da velha multiplayer em tempo real via WebSocket. Client em JavaScript e se
 ## Stack
 
 - **Client:** HTML, CSS (Tailwind), JavaScript
-- **Server:** Python, Tornado (`tornado.websocket.WebSocketHandler`)
+- **Server:** Python, Tornado
 - **Gerenciador de pacotes:** uv
 
 ## Estrutura do projeto
