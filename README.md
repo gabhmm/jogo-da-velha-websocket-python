@@ -1,6 +1,6 @@
 # jogo-da-velha-websocket-python
 
-Jogo da velha multiplayer em tempo real via WebSocket. Client em JavaScript (reaproveitado de um projeto anterior) e servidor em Python com Tornado.
+Jogo da velha multiplayer em tempo real via WebSocket. Client em JavaScript e servidor em Python com Tornado.
 
 ## Stack
 
