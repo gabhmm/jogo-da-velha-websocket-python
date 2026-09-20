@@ -1,11 +1,20 @@
 import tornado.websocket
 import logging
-from game.connection_manager import ConnectionManager
-from messages.serializer import parse_message
-from messages.types import (
-    CreateRoomMessage, JoinRoomMessage, MakeMoveMessage,
-    RestartGameMessage, LeaveRoomMessage, ChatMessage
-)
+try:
+    from ..game.connection_manager import ConnectionManager
+    from ..messages.serializer import parse_message
+    from ..messages.types import (
+        CreateRoomMessage, JoinRoomMessage, MakeMoveMessage,
+        RestartGameMessage, LeaveRoomMessage, ChatMessage
+    )
+except (ImportError, ValueError):
+    from game.connection_manager import ConnectionManager
+    from messages.serializer import parse_message
+    from messages.types import (
+        CreateRoomMessage, JoinRoomMessage, MakeMoveMessage,
+        RestartGameMessage, LeaveRoomMessage, ChatMessage
+    )
+
 
 class GameHandler(tornado.websocket.WebSocketHandler):
     def initialize(self, manager: ConnectionManager):

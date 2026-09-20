@@ -1,5 +1,11 @@
 import pytest
-from src.jogo_da_velha_websocket_python.server.game.tic_tac_toe import TicTacToeGame
+
+try:
+    from jogo_da_velha_websocket_python.server.game.tic_tac_toe import TicTacToeGame
+except ImportError:
+    from src.jogo_da_velha_websocket_python.server.game.tic_tac_toe import TicTacToeGame
+
+
 
 def test_initial_state():
     game = TicTacToeGame()

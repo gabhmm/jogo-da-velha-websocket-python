@@ -51,9 +51,12 @@ uv sync
 
 ## Rodando o Servidor
 
+Você pode iniciar o servidor de forma rápida com:
+
 ```bash
-uv run src/jogo_da_velha_websocket_python/server/main.py
+uv run start
 ```
+*(ou `uv run server`, ou `uv run run.py`)*
 
 O servidor WebSocket iniciará em `ws://localhost:8888/ws` (ou na porta definida).
 

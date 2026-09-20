@@ -6,8 +6,12 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-from game.connection_manager import ConnectionManager
-from handlers.game_handler import GameHandler
+try:
+    from game.connection_manager import ConnectionManager
+    from handlers.game_handler import GameHandler
+except ImportError:
+    from jogo_da_velha_websocket_python.server.game.connection_manager import ConnectionManager
+    from jogo_da_velha_websocket_python.server.handlers.game_handler import GameHandler
 
 def make_app():
     manager = ConnectionManager()
@@ -15,10 +19,17 @@ def make_app():
         (r"/ws", GameHandler, dict(manager=manager)),
     ])
 
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
+def main():
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
     app = make_app()
     port = 8888
     app.listen(port)
     logging.info(f"Servidor WebSocket iniciado na porta {port}.")
-    tornado.ioloop.IOLoop.current().start()
+    try:
+        tornado.ioloop.IOLoop.current().start()
+    except KeyboardInterrupt:
+        logging.info("Servidor encerrado pelo usuário com sucesso.")
+
+if __name__ == "__main__":
+    main()
+
