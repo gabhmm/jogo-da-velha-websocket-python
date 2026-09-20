@@ -6,9 +6,15 @@ class SocketClient {
     }
 
     connect() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const host = window.location.host;
-        const url = `${protocol}//${host}`;
+        // Se abrir localmente (file://), força o localhost:8888
+        let url;
+        if (window.location.protocol === 'file:') {
+            url = 'ws://localhost:8888/ws';
+        } else {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const host = window.location.host;
+            url = `${protocol}//${host}/ws`;
+        }
 
         this.socket = new WebSocket(url);
 
@@ -34,7 +40,7 @@ class SocketClient {
 
     send(type, payload = {}) {
         if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-            this.socket.send(JSON.stringify({ type, payload }));
+            this.socket.send(JSON.stringify({ type, ...payload }));
         }
     }
 

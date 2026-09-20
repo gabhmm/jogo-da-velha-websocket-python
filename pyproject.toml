@@ -13,3 +13,12 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+
+[tool.pyright]
+extraPaths = ["src/jogo_da_velha_websocket_python/server"]
