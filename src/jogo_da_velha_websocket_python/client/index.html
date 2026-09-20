@@ -4,78 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo da Velha Multiplayer</title>
+    <!-- Incluindo Tailwind CDN para garantir que todas as classes utilitárias funcionem -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center font-sans">
 
-    <!-- Container Principal -->
-    <div id="app" class="w-full max-w-md p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+    <!-- Container Principal Flex (Jogo + Chat) -->
+    <div class="flex flex-col md:flex-row w-full max-w-4xl gap-6 p-4 items-start justify-center">
         
-        <!-- Cabeçalho -->
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-extrabold text-purple-400 tracking-tighter">JOGO DA VELHA</h1>
-        </header>
+        <!-- App Jogo -->
+        <div id="app" class="w-full max-w-md p-6 bg-gray-800 rounded-xl shadow-2xl border border-gray-700">
+            
+            <!-- Cabeçalho -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-extrabold text-purple-400 tracking-tighter">JOGO DA VELHA</h1>
+            </header>
 
-        <!-- Tela de Entrada -->
-        <div id="lobby" class="space-y-6">
-            <div class="space-y-4">
-                <input id="inputPlayerName" type="text" placeholder="Seu Nome" class="w-full bg-gray-700 border border-gray-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
-                
-                <button id="btnCreate" class="w-full py-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold transition-all transform hover:scale-105">
-                    CRIAR NOVA SALA
-                </button>
-                <div class="flex items-center space-x-2">
-                    <input id="inputRoomId" type="text" placeholder="Código da Sala" class="flex-1 bg-gray-700 border border-gray-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 uppercase">
-                    <button id="btnJoin" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold transition-all">
-                        ENTRAR
+            <!-- Tela de Entrada -->
+            <div id="lobby" class="space-y-6">
+                <div class="space-y-4">
+                    <input id="inputPlayerName" type="text" placeholder="Seu Nome" class="w-full bg-gray-700 border border-gray-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white">
+                    
+                    <button id="btnCreate" class="w-full py-4 bg-purple-600 hover:bg-purple-700 rounded-lg font-bold transition-all transform hover:scale-105">
+                        CRIAR NOVA SALA
                     </button>
+                    <div class="flex items-center space-x-2">
+                        <input id="inputRoomId" type="text" placeholder="Código da Sala" class="flex-1 bg-gray-700 border border-gray-600 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 uppercase text-white">
+                        <button id="btnJoin" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold transition-all">
+                            ENTRAR
+                        </button>
+                    </div>
+                </div>
+                <p id="lobbyMessage" class="text-center text-sm text-gray-500"></p>
+            </div>
+
+            <!-- Tela de Jogo (Oculta por padrão) -->
+            <div id="gameScreen" class="hidden space-y-6">
+                <div class="flex justify-between items-center text-sm font-semibold mb-4">
+                    <div id="playerSymbol" class="px-3 py-1 bg-purple-900 text-purple-200 rounded-full">Símbolo: ?</div>
+                    <div id="roomCode" class="text-gray-400">Sala: #XXXXXX</div>
+                </div>
+
+                <div id="playersInfo" class="flex justify-around text-sm text-gray-300 mb-2">
+                    <div id="playerXName">X: Aguardando...</div>
+                    <div id="playerOName">O: Aguardando...</div>
+                </div>
+
+                <!-- Toast Notification Container -->
+                <div id="gameToast" class="hidden fixed top-10 left-1/2 transform -translate-x-1/2 z-[60] text-center py-3 px-6 rounded-xl text-sm font-bold shadow-2xl transition-all" role="status" aria-live="polite"></div>
+
+                <div id="status" class="text-center py-2 bg-gray-700 rounded-lg font-medium text-purple-400 relative">
+                    Aguardando oponente...
+                </div>
+
+                <!-- Tabuleiro -->
+                <div id="board" class="grid grid-cols-3 gap-3 bg-gray-700 p-3 rounded-xl shadow-inner border-2 border-gray-600">
+                    <div data-index="0" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="1" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="2" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="3" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="4" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="5" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="6" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="7" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                    <div data-index="8" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Chat Panel (Oculto por padrão, aparece no jogo) -->
+        <div id="chatPanel" class="hidden w-full md:w-80 h-96 md:h-[500px] bg-gray-800 rounded-xl shadow-2xl border border-gray-700 flex flex-col">
+            <div class="bg-gray-900 p-3 rounded-t-xl border-b border-gray-700">
+                <h3 class="font-bold text-gray-300">Chat da Sala</h3>
+            </div>
+            <div id="chatMessages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm">
+                <!-- mensagens entram aqui -->
+            </div>
+            <div class="p-3 bg-gray-700 rounded-b-xl flex gap-2">
+                <input id="chatInput" type="text" placeholder="Digite uma mensagem..." class="flex-1 bg-gray-600 border border-gray-500 p-2 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <button id="btnSendChat" class="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg font-bold">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Fim de Jogo -->
+    <div id="gameOverModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm transition-opacity">
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl p-8 max-w-sm w-full transform transition-all scale-95 opacity-0" id="gameOverModalContent">
+            <h2 id="modalTitle" class="text-3xl font-extrabold text-center text-white mb-2">VITÓRIA!</h2>
+            <p id="modalSubtitle" class="text-center text-gray-400 mb-6">O jogador X venceu a partida.</p>
+            
+            <!-- Placar -->
+            <div class="bg-gray-900 rounded-xl p-4 mb-6 flex justify-between items-center border border-gray-700">
+                <div class="text-center">
+                    <span id="scoreboardNameX" class="block text-xs text-gray-500 font-bold uppercase tracking-wider">Jogador X</span>
+                    <span id="scoreX" class="text-2xl font-bold text-purple-400">0</span>
+                </div>
+                <div class="text-gray-600 font-bold">vs</div>
+                <div class="text-center">
+                    <span id="scoreboardNameO" class="block text-xs text-gray-500 font-bold uppercase tracking-wider">Jogador O</span>
+                    <span id="scoreO" class="text-2xl font-bold text-indigo-400">0</span>
                 </div>
             </div>
-            <p id="lobbyMessage" class="text-center text-sm text-gray-500"></p>
+
+            <div class="space-y-3">
+                <button id="btnRematch" class="w-full py-3 bg-purple-600 hover:bg-purple-500 rounded-lg font-bold text-white transition-colors shadow-lg">
+                    JOGAR NOVAMENTE
+                </button>
+                <div id="waitingHostMessage" class="hidden text-center text-sm font-medium text-gray-400 py-2">
+                    Esperando host recomeçar a partida...
+                </div>
+                <button id="btnLeaveRoom" class="w-full py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-gray-300 transition-colors">
+                    SAIR DA SALA
+                </button>
+            </div>
         </div>
-
-        <!-- Tela de Jogo (Oculta por padrão) -->
-        <div id="gameScreen" class="hidden space-y-6">
-            <div class="flex justify-between items-center text-sm font-semibold mb-4">
-                <div id="playerSymbol" class="px-3 py-1 bg-purple-900 text-purple-200 rounded-full">Símbolo: ?</div>
-                <div id="roomCode" class="text-gray-400">Sala: #XXXXXX</div>
-            </div>
-
-            <div id="playersInfo" class="flex justify-around text-sm text-gray-300 mb-2">
-                <div id="playerXName">X: Aguardando...</div>
-                <div id="playerOName">O: Aguardando...</div>
-            </div>
-
-            <div id="status" class="text-center py-2 bg-gray-700 rounded-lg font-medium text-purple-400">
-                Aguardando oponente...
-            </div>
-
-            <div id="gameToast" class="hidden text-center py-2 rounded-lg text-sm font-medium" role="status" aria-live="polite"></div>
-
-            <!-- Tabuleiro -->
-            <div id="board" class="grid grid-cols-3 gap-3 bg-gray-700 p-3 rounded-xl shadow-inner border-2 border-gray-600">
-                <div data-index="0" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="1" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="2" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="3" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="4" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="5" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="6" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="7" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-                <div data-index="8" class="cell flex items-center justify-center h-24 bg-gray-800 rounded-lg text-5xl font-bold cursor-pointer hover:bg-gray-700 transition-colors"></div>
-            </div>
-
-            <button id="btnRestart" class="hidden w-full py-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg font-bold transition-all">
-                JOGAR NOVAMENTE
-            </button>
-
-            <button id="btnBackLobby" class="hidden w-full py-2 bg-gray-600 hover:bg-gray-500 rounded-lg text-sm font-medium">
-                Voltar ao início
-            </button>
-
-            <button id="btnLeave" class="w-full py-2 text-gray-400 hover:text-red-400 text-sm font-medium">Sair da Sala</button>
-        </div>
-
     </div>
 
     <!-- Scripts -->

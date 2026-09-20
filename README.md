@@ -12,29 +12,32 @@ Jogo da velha multiplayer em tempo real via WebSocket. Client em JavaScript e se
 
 ```
 jogo-da-velha-websocket-python/
-├── client/
-│   ├── css/
-│   │   ├── input.css
-│   │   └── style.css
-│   ├── js/
-│   │   ├── communication/
-│   │   │   └── socket.js
-│   │   ├── presentation/
-│   │   │   └── ui.js
-│   │   └── game.js
-│   └── index.html
-│
-├── server/
-│   ├── game/
-│   │   ├── connection_manager.py
-│   │   └── tic_tac_toe.py
-│   ├── handlers/
-│   │   └── game_handler.py
-│   ├── messages/
-│   │   ├── serializer.py
-│   │   └── types.py
-│   └── main.py
-│
+├── src/
+│   └── jogo_da_velha_websocket_python/
+│       ├── client/
+│       │   ├── css/
+│       │   │   ├── input.css
+│       │   │   └── style.css
+│       │   ├── js/
+│       │   │   ├── communication/
+│       │   │   │   └── socket.js
+│       │   │   ├── presentation/
+│       │   │   │   └── ui.js
+│       │   │   └── game.js
+│       │   └── index.html
+│       └── server/
+│           ├── game/
+│           │   ├── connection_manager.py
+│           │   └── tic_tac_toe.py
+│           ├── handlers/
+│           │   └── game_handler.py
+│           ├── messages/
+│           │   ├── serializer.py
+│           │   └── types.py
+│           └── main.py
+├── tests/
+│   ├── conftest.py
+│   └── test_tic_tac_toe.py
 ├── pyproject.toml
 ├── uv.lock
 └── README.md
@@ -46,12 +49,23 @@ jogo-da-velha-websocket-python/
 uv sync
 ```
 
-## Rodando o servidor
+## Rodando o Servidor
+
+Você pode iniciar o servidor de forma rápida com:
 
 ```bash
-uv run server/main.py
+uv run start
 ```
+*(ou `uv run server`, ou `uv run run.py`)*
 
-## Abrindo o client
+O servidor WebSocket iniciará em `ws://localhost:8888/ws` (ou na porta definida).
 
-Abrir `client/index.html` no navegador.
+## Abrindo o Client
+
+Abra o arquivo `src/jogo_da_velha_websocket_python/client/index.html` no seu navegador (ou utilize uma extensão como Live Server no VS Code).
+
+## Rodando os Testes Automatizados
+
+```bash
+uv run pytest
+```

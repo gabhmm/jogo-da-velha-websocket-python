@@ -1,0 +1,26 @@
+# Ambientes Virtuais (uv / venv)
+.venv/
+venv/
+ENV/
+env/
+
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testes e Cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Configurações de IDE e Editores
+.vscode/
+.idea/
+*.sublime-workspace
+*.swp
+*.swo
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
