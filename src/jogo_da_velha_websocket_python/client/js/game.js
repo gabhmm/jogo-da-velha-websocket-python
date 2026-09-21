@@ -124,7 +124,7 @@ class Game {
                     
                     const isHost = this.mySymbol === 'X';
                     const hostName = payload.players['X'];
-                    ui.showGameOverModal(payload.winner, payload.scores, isHost, hostName, payload.players);
+                    ui.showGameOverModal(payload.winner, payload.scores, isHost, hostName, payload.players, this.mySymbol);
                 }
                 break;
 

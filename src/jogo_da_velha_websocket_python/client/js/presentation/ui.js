@@ -108,7 +108,7 @@ class UI {
         }
     }
 
-    showGameOverModal(winner, scores, isHost, hostName, players) {
+    showGameOverModal(winner, scores, isHost, hostName, players, mySymbol) {
         this.scoreX.innerText = scores['X'];
         this.scoreO.innerText = scores['O'];
 
@@ -119,9 +119,14 @@ class UI {
             this.modalTitle.innerText = 'EMPATE!';
             this.modalTitle.className = 'text-3xl font-extrabold text-center text-fuchsia-400 mb-2';
             this.modalSubtitle.innerText = 'Ninguém venceu dessa vez.';
-        } else {
+        } else if (winner === mySymbol) {
             this.modalTitle.innerText = 'VITÓRIA!';
             this.modalTitle.className = 'text-3xl font-extrabold text-center text-green-400 mb-2';
+            const winnerName = players[winner];
+            this.modalSubtitle.innerText = `Você venceu a partida!`;
+        } else {
+            this.modalTitle.innerText = 'DERROTA!';
+            this.modalTitle.className = 'text-3xl font-extrabold text-center text-red-500 mb-2';
             const winnerName = players[winner];
             this.modalSubtitle.innerText = `${winnerName} (${winner}) venceu a partida.`;
         }
